@@ -65,15 +65,21 @@ digitalWrite (heater, LOW);
 }
   if (butt1.isDouble()==true){
 //Действие при двойном клике
+
+//цикл настройки температуры
 while (butt1.isDouble() != true){
    led_on_off ( 3, 500, 500);
    if (butt1.isClick() == true){
       temp += 20;
+      led_on_off (4, 100, 100);
+      delay(500);
       }
    if (butt1.isHolded() == true){
      temp -=20;
+     led_on_off (2, 100, 100);
+     delay(500);
       }
-   if (temp < 0 || temp > 200) {
+   if (temp < 0 || temp > 255) {
       temp = 0;
       led_on_off ( 3, 250, 250);
       }
@@ -91,7 +97,7 @@ while (butt1.isTriple() != true){
      motor_speed -=20;
          }
    if (motor_speed < 0 || 
-       motor_speed > 250){
+       motor_speed > 255){
          motor_speed = 0;
          led_on_off ( 3, 250, 250);
          }
