@@ -30,6 +30,9 @@ void led_on_off (int pin, int repeat, int time_on, int time_off) {
 //_________________________________
 
 void setup(){
+pinMode (reductor, OUTPUT);
+pinMode (heater, OUTPUT);
+pinMode (termometre, INPUT);
 pinMode (led, OUTPUT);
 pinMode (button, INPUT);
 }
