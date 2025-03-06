@@ -44,6 +44,7 @@ void loop(){
     //Действие при одиночном нажатии
     //Переход в состояние “работа”
     while (butt1.isSingle() != true){
+      butt1.tick();
       digitalWrite (led, HIGH);
       //Цикл будет продолжаться пока не   
       //произойдет одиночное нажатие
@@ -71,6 +72,7 @@ void loop(){
 
     //цикл настройки температуры
     while (butt1.isDouble() != true){
+      butt1.tick();
       led_on_off (3, 500, 500);
       if (butt1.isClick() == true){
         temp += temp_set_interval;
@@ -93,6 +95,7 @@ void loop(){
     // Действие при тройном клике
 
     while (butt1.isTriple() != true){
+      butt1.tick();
       if (butt1.isClick() == true){
          motor_speed += motor_set_interval;
       }
