@@ -7,12 +7,12 @@ https://github.com/GyverLibs/GyverButton
 #define reductor 1 // редуктор
 #define heater 2 // нагреватель
 #define termometre 3 // термометр
-#define led 4 // светодиод служит для обратной связи
+#define led 4 // светодиод (для обратной связи)
 #define button 5 // кнопка для управления
 
 GButton butt1 (button);
 
-int motor_speed = 0;
+int motor_speed = 10;
 int temp = 0;
 
 //____функция мигания светодиодом___
@@ -35,37 +35,41 @@ pinMode (button, INPUT);
 }
 
 void loop(){
-butt1.tick(); //опрос кнопки
+  butt1.tick(); //опрос кнопки
  
-if (butt1.isSingle()==true){
-//Действие при одиночном нажатии
-//Переход в состояние “работа”
-   while (butt1.isSingle() != true){
-   digitalWrite (led, HIGH);
-   //Цикл будет продолжаться пока не   
-   //произойдет одиночное нажатие
+  if (butt1.isSingle()==true){
+  //Действие при одиночном нажатии
+  //Переход в состояние “работа”
+    while (butt1.isSingle() != true){
+      digitalWrite (led, HIGH);
+      //Цикл будет продолжаться пока не   
+      //произойдет одиночное нажатие
 
-   //Включение мотора
-   analogWrite (reductor, motor_speed);
+      //Включение мотора
+      analogWrite (reductor, motor_speed);
 
-   //нагрев до “temp”
-   if(analogRead (termometre) > temp){
-      digitalWrite (heater, LOW)
-   }
-   else {digitalWrite (heater, HIGH);}
+     //нагрев до “temp”
+     if(analogRead (termometre) >= temp){
+        digitalWrite (heater, LOW)
+     }
+     else {
+        digitalWrite (heater, HIGH);
+     }
+  }
+  //Завершение произойдет при нажатии
+  analogWrite (reductor, 0);
+  digitalWrite (led, LOW);
+  digitalWrite (heater, LOW);
+  //Выключение всей периферии
+  }
 }
-//Завершение произойдет при нажатии
-analogWrite (reductor, 0);
-digitalWrite (led, LOW);
-digitalWrite (heater, LOW);
-//Выключение всей периферии
-}
-  if (butt1.isDouble()==true){
+
+if (butt1.isDouble()==true){
 //Действие при двойном клике
 
 //цикл настройки температуры
 while (butt1.isDouble() != true){
-   led_on_off ( 3, 500, 500);
+   led_on_off (3, 500, 500);
    if (butt1.isClick() == true){
       temp += 20;
       led_on_off (4, 100, 100);
@@ -83,7 +87,7 @@ while (butt1.isDouble() != true){
    }
 }
 
-  if (butt1.isTriple()){
+if (butt1.isTriple()){
 // Действие при тройном клике
 
 while (butt1.isTriple() != true){
