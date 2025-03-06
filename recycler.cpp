@@ -10,7 +10,7 @@ https://github.com/GyverLibs/GyverButton
 #define led 4                  // светодиод (для обратной связи)
 #define button 5               // кнопка для управления
 
-#define motor_set_inerval 10   // интервал настройки мотора
+#define motor_set_itnerval 10   // интервал настройки мотора
 #define temp_set_interval 20   // интервал настройки нагревателя
 
 GButton butt1 (button);
