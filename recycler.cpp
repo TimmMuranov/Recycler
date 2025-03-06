@@ -4,11 +4,14 @@ https://github.com/GyverLibs/GyverButton
 */
 #include “GyverButton.h”
 
-#define reductor 1 // редуктор
-#define heater 2 // нагреватель
-#define termometre 3 // термометр
-#define led 4 // светодиод (для обратной связи)
-#define button 5 // кнопка для управления
+#define reductor 1             // редуктор
+#define heater 2               // нагреватель
+#define termometre 3           // термометр
+#define led 4                  // светодиод (для обратной связи)
+#define button 5               // кнопка для управления
+
+#define motor_set_inerval 10   // интервал настройки мотора
+#define temp_set_interval 20   // интервал настройки нагревателя
 
 GButton butt1 (button);
 
@@ -38,8 +41,8 @@ void loop(){
   butt1.tick(); //опрос кнопки
  
   if (butt1.isSingle()==true){
-  //Действие при одиночном нажатии
-  //Переход в состояние “работа”
+    //Действие при одиночном нажатии
+    //Переход в состояние “работа”
     while (butt1.isSingle() != true){
       digitalWrite (led, HIGH);
       //Цикл будет продолжаться пока не   
@@ -55,53 +58,51 @@ void loop(){
      else {
         digitalWrite (heater, HIGH);
      }
-  }
-  //Завершение произойдет при нажатии
-  analogWrite (reductor, 0);
-  digitalWrite (led, LOW);
-  digitalWrite (heater, LOW);
-  //Выключение всей периферии
-  }
-}
-
-if (butt1.isDouble()==true){
-//Действие при двойном клике
-
-//цикл настройки температуры
-while (butt1.isDouble() != true){
-   led_on_off (3, 500, 500);
-   if (butt1.isClick() == true){
-      temp += 20;
-      led_on_off (4, 100, 100);
-      delay(500);
-      }
-   if (butt1.isHolded() == true){
-     temp -=20;
-     led_on_off (2, 100, 100);
-     delay(500);
-      }
-   if (temp < 0 || temp > 255) {
-      temp = 0;
-      led_on_off ( 3, 250, 250);
-      }
    }
-}
+   //Завершение произойдет при нажатии
+   analogWrite (reductor, 0);
+   digitalWrite (led, LOW);
+   digitalWrite (heater, LOW);
+   //Выключение всей периферии
+  }
 
-if (butt1.isTriple()){
-// Действие при тройном клике
+  if (butt1.isDouble()==true){
+    //Действие при двойном клике
 
-while (butt1.isTriple() != true){
+    //цикл настройки температуры
+    while (butt1.isDouble() != true){
+      led_on_off (3, 500, 500);
       if (butt1.isClick() == true){
-         motor_speed += 20;
-         }
-   if (butt1.isHolded() == true){
-     motor_speed -=20;
-         }
-   if (motor_speed < 0 || 
-       motor_speed > 255){
-         motor_speed = 0;
-         led_on_off ( 3, 250, 250);
-         }
+        temp += temp_set_interval;
+        led_on_off (4, 100, 100);
+        delay(500);
       }
-   }
+      if (butt1.isHolded() == true){
+        temp -= temp_set_interval;
+        led_on_off (2, 100, 100);
+        delay(500);
+      }
+      if (temp < 0 || temp > 255) {
+        temp = 0;
+        led_on_off (3, 250, 250);
+      }
+    }
+  }
+
+  if (butt1.isTriple()){
+    // Действие при тройном клике
+
+    while (butt1.isTriple() != true){
+      if (butt1.isClick() == true){
+         motor_speed += motor_set_interval;
+      }
+      if (butt1.isHolded() == true){
+        motor_speed -= motor_set_interval;
+      }
+      if (motor_speed < 0 || motor_speed > 255){
+        motor_speed = 0;
+        led_on_off ( 3, 250, 250);
+      }
+    }
+  }
 }
